@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { jobs, projects, skills } from './schema';
+import type { Job, Project, Skill } from './schema';
 
 export const api = {
   jobs: {
@@ -7,7 +7,7 @@ export const api = {
       method: 'GET' as const,
       path: '/api/jobs' as const,
       responses: {
-        200: z.array(z.custom<typeof jobs.$inferSelect>()),
+        200: z.array(z.custom<Job>()),
       },
     },
   },
@@ -16,7 +16,7 @@ export const api = {
       method: 'GET' as const,
       path: '/api/projects' as const,
       responses: {
-        200: z.array(z.custom<typeof projects.$inferSelect>()),
+        200: z.array(z.custom<Project>()),
       },
     },
   },
@@ -25,7 +25,7 @@ export const api = {
       method: 'GET' as const,
       path: '/api/skills' as const,
       responses: {
-        200: z.array(z.custom<typeof skills.$inferSelect>()),
+        200: z.array(z.custom<Skill>()),
       },
     },
   },

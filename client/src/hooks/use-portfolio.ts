@@ -37,3 +37,41 @@ export function useSkills() {
     },
   });
 }
+
+// ============================================
+// GitHub Stats Hook
+// ============================================
+
+interface GitHubContribution {
+  contributionCount: number;
+  date: string;
+  color: string;
+}
+
+interface GitHubWeek {
+  contributionDays: GitHubContribution[];
+}
+
+interface GitHubCalendar {
+  totalContributions: number;
+  weeks: GitHubWeek[];
+}
+
+interface GitHubResponse {
+  contributions: GitHubCalendar | null;
+  error?: string;
+  message?: string;
+}
+
+export function useGitHubContributions() {
+  return useQuery<GitHubResponse>({
+    queryKey: ["/api/github-contributions"],
+    queryFn: async () => {
+      const res = await fetch("/api/github-contributions");
+      if (!res.ok) throw new Error("Failed to fetch GitHub contributions");
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 60, // Cache for 1 hour
+    retry: 1,
+  });
+}

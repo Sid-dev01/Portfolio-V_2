@@ -1,6 +1,5 @@
-import { jobs, projects, skills, type Job, type Project, type Skill, type InsertJob, type InsertProject, type InsertSkill } from "@shared/schema";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { JobModel, ProjectModel, SkillModel, type Job, type Project, type Skill, type InsertJob, type InsertProject, type InsertSkill } from "@shared/schema";
+import { connectToDatabase } from "./db";
 
 export interface IStorage {
   getJobs(): Promise<Job[]>;
@@ -11,21 +10,41 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getJobs(): Promise<Job[]> {
-    return await db.select().from(jobs);
+    await connectToDatabase();
+    const jobs = await JobModel.find().lean();
+    return jobs.map((job: any) => ({
+      ...job,
+      id: job._id.toString(),
+      _id: job._id.toString(),
+    }));
   }
 
   async getProjects(): Promise<Project[]> {
-    return await db.select().from(projects);
+    await connectToDatabase();
+    const projects = await ProjectModel.find().lean();
+    return projects.map((project: any) => ({
+      ...project,
+      id: project._id.toString(),
+      _id: project._id.toString(),
+    }));
   }
 
   async getSkills(): Promise<Skill[]> {
-    return await db.select().from(skills);
+    await connectToDatabase();
+    const skills = await SkillModel.find().lean();
+    return skills.map((skill: any) => ({
+      ...skill,
+      id: skill._id.toString(),
+      _id: skill._id.toString(),
+    }));
   }
 
   async seedData(): Promise<void> {
-    const existingJobs = await this.getJobs();
-    if (existingJobs.length === 0) {
-      await db.insert(jobs).values([
+    await connectToDatabase();
+    
+    const existingJobs = await JobModel.countDocuments();
+    if (existingJobs === 0) {
+      await JobModel.insertMany([
         {
           company: "MCC Pvt Ltd",
           role: "Full Stack Developer Intern",
@@ -41,9 +60,9 @@ export class DatabaseStorage implements IStorage {
       ]);
     }
 
-    const existingProjects = await this.getProjects();
-    if (existingProjects.length === 0) {
-      await db.insert(projects).values([
+    const existingProjects = await ProjectModel.countDocuments();
+    if (existingProjects === 0) {
+      await ProjectModel.insertMany([
         {
           title: "Classroom Monitoring System",
           description: "Engineered AI-powered system using YOLO and PyTorch for real-time student attendance and behavior analysis with 78% accuracy. Processed video data using OpenCV, NumPy, and Pandas reducing manual attendance tracking time by 85%.",
@@ -57,9 +76,9 @@ export class DatabaseStorage implements IStorage {
       ]);
     }
 
-    const existingSkills = await this.getSkills();
-    if (existingSkills.length === 0) {
-      await db.insert(skills).values([
+    const existingSkills = await SkillModel.countDocuments();
+    if (existingSkills === 0) {
+      await SkillModel.insertMany([
         { category: "Languages", items: ["JavaScript ES6+", "TypeScript", "Python", "HTML5", "CSS3", "SQL"] },
         { category: "Frontend", items: ["React.js", "React Native", "Redux", "Bootstrap", "Tailwind CSS", "Vite"] },
         { category: "Backend", items: ["Node.js", "Express.js", "RESTful APIs", "JWT Auth", "Microservices"] },
