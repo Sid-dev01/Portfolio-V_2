@@ -7,7 +7,7 @@ export async function connectToDatabase() {
     return;
   }
 
-  const MONGODB_URI = process.env.MONGODB_URI;
+  let MONGODB_URI = process.env.MONGODB_URI;
   
   if (!MONGODB_URI) {
     throw new Error(
@@ -15,21 +15,39 @@ export async function connectToDatabase() {
     );
   }
 
+  // Ensure connection string has required parameters for SSL/TLS
+  const url = new URL(MONGODB_URI);
+  if (!url.searchParams.has('retryWrites')) {
+    url.searchParams.set('retryWrites', 'true');
+  }
+  if (!url.searchParams.has('w')) {
+    url.searchParams.set('w', 'majority');
+  }
+  // Force TLS for production environments
+  if (process.env.NODE_ENV === 'production') {
+    url.searchParams.set('tls', 'true');
+    url.searchParams.set('tlsAllowInvalidCertificates', 'false');
+  }
+  
+  MONGODB_URI = url.toString();
+  
+  console.log('Attempting MongoDB connection...');
+  console.log('Environment:', process.env.NODE_ENV || 'development');
+
   try {
     await mongoose.connect(MONGODB_URI, {
       dbName: "portfolio",
       bufferCommands: false,
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 45000,
-      // SSL/TLS configuration for production (Render, etc.)
-      tls: true,
-      tlsAllowInvalidCertificates: false,
+      serverSelectionTimeoutMS: 30000, // Increased timeout for Render
+      socketTimeoutMS: 75000,
+      maxPoolSize: 10,
+      minPoolSize: 2,
     });
 
     isConnected = true;
-    console.log("Connected to MongoDb");
+    console.log("✅ Connected to MongoDB successfully");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("❌ MongoDB connection error:", error);
     throw error;
   }
 }
