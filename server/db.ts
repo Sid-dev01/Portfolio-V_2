@@ -22,6 +22,7 @@ export async function connectToDatabase() {
     });
 
     isConnected = true;
+    console.log("Connected to MongoDb");
   } catch (error) {
     throw error;
   }
@@ -29,9 +30,11 @@ export async function connectToDatabase() {
 
 // Handle connection events
 mongoose.connection.on("connected", () => {
+  console.log("MongoDB connection established");
 });
 
 mongoose.connection.on("error", (err: any) => {
+  console.log("mongoose connection error:", err);
 });
 
 mongoose.connection.on("disconnected", () => {

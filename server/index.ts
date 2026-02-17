@@ -3,7 +3,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 
-const app = express();
+export const app = express();
 
 declare module "http" {
   interface IncomingMessage {
@@ -29,6 +29,7 @@ export function log(message: string, source = "express") {
     hour12: true,
   });
 
+  console.log(`${formattedTime} [${source}] ${message}`);
 }
 
 app.use((req, res, next) => {
@@ -57,7 +58,8 @@ app.use((req, res, next) => {
   next();
 });
 
-(async () => {
+// Initialize the app
+export async function initializeApp() {
   // Register API routes
   await registerRoutes(app);
 
@@ -65,6 +67,8 @@ app.use((req, res, next) => {
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
+
+    console.error("Internal Server Error:", err);
 
     if (res.headersSent) {
       return next(err);
@@ -81,11 +85,27 @@ app.use((req, res, next) => {
     await setupVite(app);
   }
 
-  // Start Express server
-  const port = parseInt(process.env.PORT || "5000", 10);
-  const host = process.env.HOST || "0.0.0.0";
-  
-  app.listen(port, host, () => {
-    log(`Server is running on http://${host}:${port}`);
-  });
-})();
+  return app;
+}
+
+// Start server if not in Vercel environment
+// Vercel will handle starting via the API handler
+if (!process.env.VERCEL) {
+  (async () => {
+    console.log("🚀 Starting server initialization...");
+    try {
+      await initializeApp();
+      console.log("✅ App initialized successfully");
+      
+      const port = parseInt(process.env.PORT || "5000", 10);
+      const host = process.env.HOST || "0.0.0.0";
+      
+      app.listen(port, host, () => {
+        log(`Server is running on http://${host}:${port}`);
+      });
+    } catch (error) {
+      console.error("❌ Failed to start server:", error);
+      process.exit(1);
+    }
+  })();
+}
