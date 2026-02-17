@@ -88,24 +88,21 @@ export async function initializeApp() {
   return app;
 }
 
-// Start server if not in Vercel environment
-// Vercel will handle starting via the API handler
-if (!process.env.VERCEL) {
-  (async () => {
-    console.log("🚀 Starting server initialization...");
-    try {
-      await initializeApp();
-      console.log("✅ App initialized successfully");
-      
-      const port = parseInt(process.env.PORT || "5000", 10);
-      const host = process.env.HOST || "0.0.0.0";
-      
-      app.listen(port, host, () => {
-        log(`Server is running on http://${host}:${port}`);
-      });
-    } catch (error) {
-      console.error("❌ Failed to start server:", error);
-      process.exit(1);
-    }
-  })();
-}
+// Start the server
+(async () => {
+  console.log("🚀 Starting server initialization...");
+  try {
+    await initializeApp();
+    console.log("✅ App initialized successfully");
+    
+    const port = parseInt(process.env.PORT || "5000", 10);
+    const host = process.env.HOST || "0.0.0.0";
+    
+    app.listen(port, host, () => {
+      log(`Server is running on http://${host}:${port}`);
+    });
+  } catch (error) {
+    console.error("❌ Failed to start server:", error);
+    process.exit(1);
+  }
+})();
