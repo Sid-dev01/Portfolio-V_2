@@ -93,6 +93,18 @@ npm start
 
 ## Troubleshooting
 
+### SSL/TLS Alert Internal Error (MongooseServerSelectionError)
+**Error**: `MongooseServerSelectionError: SSL routines:ssl3_read_bytes:tlsv1 alert internal error`
+
+**Solution**: 
+1. Update your MongoDB connection string to include SSL parameters:
+   ```
+   mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority&tls=true
+   ```
+2. In Render dashboard, update the `MONGODB_URI` environment variable with the corrected string
+3. Ensure your MongoDB Atlas cluster allows connections from `0.0.0.0/0` (Network Access whitelist)
+4. Redeploy the service
+
 ### Build Fails
 - Check that all environment variables are set
 - Verify `MONGODB_URI` is accessible from Render's servers
@@ -104,9 +116,13 @@ npm start
 - Review runtime logs
 
 ### Database Connection Issues
-- MongoDB Atlas: Whitelist `0.0.0.0/0` in Network Access
-- Verify connection string format
-- Test connection locally first
+- **MongoDB Atlas Network Access**: Whitelist `0.0.0.0/0` in Network Access settings
+  - Go to MongoDB Atlas → Network Access → Add IP Address → Allow Access from Anywhere
+- **Connection String Format**: Must include `tls=true` parameter
+  - Correct: `mongodb+srv://user:pass@cluster.mongodb.net/?retryWrites=true&w=majority&tls=true`
+  - Incorrect: `mongodb+srv://user:pass@cluster.mongodb.net/` (missing parameters)
+- **Test Connection**: Use MongoDB Compass or `mongosh` to verify connection string works
+- **Timeout Issues**: Check `serverSelectionTimeoutMS` in connection options (default: 10000ms)
 
 ## Support
 

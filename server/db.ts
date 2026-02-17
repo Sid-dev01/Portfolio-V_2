@@ -19,11 +19,17 @@ export async function connectToDatabase() {
     await mongoose.connect(MONGODB_URI, {
       dbName: "portfolio",
       bufferCommands: false,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      // SSL/TLS configuration for production (Render, etc.)
+      tls: true,
+      tlsAllowInvalidCertificates: false,
     });
 
     isConnected = true;
     console.log("Connected to MongoDb");
   } catch (error) {
+    console.error("MongoDB connection error:", error);
     throw error;
   }
 }
