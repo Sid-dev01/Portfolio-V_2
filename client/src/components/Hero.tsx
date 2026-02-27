@@ -27,9 +27,9 @@ export function Hero() {
           </p>
 
           <div className="flex items-center justify-center gap-4 mb-12">
-            <SocialButton href="https://github.com" icon={<Github className="w-5 h-5" />} label="GitHub" />
-            <SocialButton href="https://linkedin.com" icon={<Linkedin className="w-5 h-5" />} label="LinkedIn" />
-            <SocialButton href="mailto:contact@example.com" icon={<Mail className="w-5 h-5" />} label="Email" />
+            <SocialButton href="https://github.com/Sid-dev01" icon={<Github className="w-5 h-5" />} label="GitHub" />
+            <SocialButton href="https://www.linkedin.com/in/siddhartha-gautam-259525287?utm_source=share_via&utm_content=profile&utm_medium=member_android" icon={<Linkedin className="w-5 h-5" />} label="LinkedIn" />
+            <SocialButton href="mailto:sid.2005.19@gmail.com" icon={<Mail className="w-5 h-5" />} label="Email" />
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -41,14 +41,13 @@ export function Hero() {
             >
               View My Work
             </Link>
-            <Link
-              to="contact"
-              smooth={true}
-              duration={500}
+            <a
+              href="/Tech.pdf"
+              download="Siddhartha_Gautam_Resume.pdf"
               className="cursor-pointer px-8 py-3 rounded-full bg-white/5 border border-white/10 text-foreground font-semibold hover:bg-white/10 transition-all"
             >
               Download Resume
-            </Link>
+            </a>
           </div>
         </motion.div>
       </div>

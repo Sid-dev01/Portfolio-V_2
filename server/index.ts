@@ -48,7 +48,11 @@ app.use((req, res, next) => {
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
       if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+        if (path !== "/api/github-contributions") {
+          logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+        } else {
+          logLine += ` :: [GitHub Contributions Payload Hidden]`;
+        }
       }
 
       log(logLine);
@@ -94,10 +98,10 @@ export async function initializeApp() {
   try {
     await initializeApp();
     console.log("✅ App initialized successfully");
-    
+
     const port = parseInt(process.env.PORT || "5000", 10);
     const host = process.env.HOST || "0.0.0.0";
-    
+
     app.listen(port, host, () => {
       log(`Server is running on http://${host}:${port}`);
     });
