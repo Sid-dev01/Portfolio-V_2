@@ -9,7 +9,8 @@
     "dev:client": "vite",
     "build": "tsx script/build.ts",
     "start": "node -r dotenv/config dist/index.cjs",
-    "check": "tsc"
+    "check": "tsc",
+    "migrate:skills": "tsx server/migrate-skills.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

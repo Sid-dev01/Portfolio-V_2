@@ -81,7 +81,8 @@ export class DatabaseStorage implements IStorage {
       await SkillModel.insertMany([
         { category: "Languages", items: ["JavaScript ES6+", "TypeScript", "Python", "HTML5", "CSS3", "SQL"] },
         { category: "Frontend", items: ["React.js", "React Native", "Redux", "Bootstrap", "Tailwind CSS", "Vite"] },
-        { category: "Backend", items: ["Node.js", "Express.js", "RESTful APIs", "JWT Auth", "Microservices", "Redis"] },
+        { category: "Backend", items: ["Node.js", "Express.js", "FastAPI", "Django", "RESTful APIs", "JWT Auth", "Microservices", "Redis", "Zod"] },
+        { category: "Database", items: ["MongoDB", "MySQL", "PostgreSQL"] },
         { category: "Data Science", items: ["NumPy", "Pandas", "Matplotlib", "Seaborn", "Scikit-learn", "PyTorch", "YOLO", "OpenCV"] },
         { category: "Tools", items: ["Git", "GitHub", "VS Code", "Postman", "npm", "Agile"] }
       ]);
