@@ -10,7 +10,8 @@
     "build": "tsx script/build.ts",
     "start": "node -r dotenv/config dist/index.cjs",
     "check": "tsc",
-    "migrate:skills": "tsx server/migrate-skills.ts"
+    "migrate:skills": "tsx server/migrate-skills.ts",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
