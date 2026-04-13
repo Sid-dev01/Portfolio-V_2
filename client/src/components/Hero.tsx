@@ -22,9 +22,6 @@ export function Hero() {
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 tracking-tight">
             Siddhartha <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Gautam</span>
           </h1>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 tracking-tight">
-            And I love my babyyy 
-          </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
             Full Stack Developer Intern & Data Science Enthusiast building modern, scalable web applications.
           </p>
