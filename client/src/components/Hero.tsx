@@ -23,7 +23,7 @@ export function Hero() {
             Siddhartha <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Gautam</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            Full Stack Developer Intern & Data Science Enthusiast building modern, scalable web applications.
+            Full Stack Developer Intern & Data Science Enthusiast building modern, scalable web applications and data-driven solutions.
           </p>
 
           <div className="flex items-center justify-center gap-4 mb-12">
